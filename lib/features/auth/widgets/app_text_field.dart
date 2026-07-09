@@ -11,6 +11,7 @@ class AppTextField extends StatelessWidget {
   final bool isPasswordVisible;
   final VoidCallback? onTogglePassword;
   final TextInputType keyboardType;
+  final String? errorText;
   final TextEditingController? textController;
   const AppTextField({
     super.key,
@@ -21,6 +22,7 @@ class AppTextField extends StatelessWidget {
     this.onTogglePassword,
     this.keyboardType = TextInputType.text,
     this.textController,
+    this.errorText,
   });
 
   @override
@@ -31,6 +33,25 @@ class AppTextField extends StatelessWidget {
       keyboardType: keyboardType,
       style: TextStyle(color: AppColors.white, fontSize: 14.sp),
       decoration: InputDecoration(
+        errorText: errorText,
+        errorStyle: TextStyle(
+          color: const Color(0xFFFF6565),
+          fontSize: 12.sp,
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.r),
+          borderSide: const BorderSide(
+            color: Color(0xFFFF6565),
+            width: 1.5,
+          ),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.r),
+          borderSide: const BorderSide(
+            color: Color(0xFFFF6565),
+            width: 1.5,
+          ),
+        ),
         hintText: hint,
         hintStyle: TextStyle(color: AppColors.white70, fontSize: 14.sp),
         prefixIcon: Padding(

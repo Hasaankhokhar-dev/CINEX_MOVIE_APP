@@ -137,7 +137,7 @@ class OtpVerification extends StatelessWidget {
             FilteringTextInputFormatter.digitsOnly,
           ],
           decoration: InputDecoration(
-            counterText: '', // maxLength ka counter hide karo
+            counterText: '',
             filled: true,
             fillColor: Colors.transparent,
             enabledBorder: OutlineInputBorder(

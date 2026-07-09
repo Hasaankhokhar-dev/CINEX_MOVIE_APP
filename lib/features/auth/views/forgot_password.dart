@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../routes/app_routes.dart';
+import '../controllers/forgot_password_controller.dart';
 import '../widgets/app_text_field.dart';
 
 class ForgotPassword extends StatelessWidget {
@@ -13,6 +14,7 @@ class ForgotPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ForgotPasswordController());
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -44,19 +46,22 @@ class ForgotPassword extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 24.h),
-              AppTextField(
+             Obx( () => AppTextField(
                 hint: AppStrings.emailHint,
                 prefixIcon: AppImages.mailIcon,
                 keyboardType: TextInputType.emailAddress,
+                textController: controller.emailController,
+                errorText: controller.emailError.value,
               ),
+             ),
               SizedBox(height: 22.h),
               SizedBox(
                 width: double.infinity,
                 height: 52.h,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Get.toNamed(AppRoutes.otpVerification);
-                  },
+                  onPressed: controller.isLoading.value
+                      ? null
+                      : () => controller.sendResetEmail(),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(

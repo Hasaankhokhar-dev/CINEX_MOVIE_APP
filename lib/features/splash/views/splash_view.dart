@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../routes/app_routes.dart';
+import '../../auth/services/auth_service.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -21,7 +22,11 @@ class _SplashViewState extends State<SplashView> {
 
   Future<void> _navigate() async {
     await Future.delayed(const Duration(seconds:3));
-    Get.offNamed(AppRoutes.onboarding);
+    if(AuthService.isLoggedIn()){
+      Get.offNamed(AppRoutes.home);
+    }else{
+      Get.offNamed(AppRoutes.onboarding);
+    }
   }
 
   @override

@@ -4,6 +4,7 @@ import 'package:cinex_movie_app/features/auth/views/login_view.dart';
 import 'package:cinex_movie_app/features/auth/views/otp_verification.dart';
 import 'package:cinex_movie_app/features/auth/views/password_changed.dart';
 import 'package:cinex_movie_app/features/auth/views/signup_view.dart';
+import 'package:cinex_movie_app/features/movie_screens/views/home_screen.dart';
 import 'package:get/get.dart';
 import '../features/auth/views/onboarding_view.dart';
 import '../features/splash/views/splash_view.dart';
@@ -19,5 +20,6 @@ class AppPages {
     GetPage(name: AppRoutes.otpVerification, page: () => const OtpVerification()),
     GetPage(name: AppRoutes.createNewPassword, page: () => const CreateNewPassword()),
     GetPage(name: AppRoutes.passwordChanged, page: () => const PasswordChanged()),
+    GetPage(name: AppRoutes.home, page: () => const HomeScreen()),
   ];
 }

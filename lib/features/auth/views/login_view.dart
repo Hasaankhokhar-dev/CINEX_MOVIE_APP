@@ -62,6 +62,7 @@ class LoginView extends StatelessWidget {
                 hint: AppStrings.emailHint,
                 prefixIcon: AppImages.mailIcon,
                 keyboardType: TextInputType.emailAddress,
+                textController: controller.emailController,
               ),
 
               SizedBox(height: 16.h),
@@ -73,6 +74,7 @@ class LoginView extends StatelessWidget {
                 isPassword: true,
                 isPasswordVisible: controller.isPasswordVisible.value,
                 onTogglePassword: controller.togglePasswordVisibility,
+                textController: controller.passwordController,
               )),
 
               SizedBox(height: 12.h),
@@ -137,11 +139,13 @@ class LoginView extends StatelessWidget {
               SizedBox(height: 24.h),
 
               // Log in button
-              SizedBox(
+             Obx(() =>SizedBox(
                 width: double.infinity,
                 height: 52.h,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: controller.isLoading.value
+                      ? null
+                      : controller.login,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(
@@ -158,7 +162,7 @@ class LoginView extends StatelessWidget {
                   ),
                 ),
               ),
-
+             ),
               SizedBox(height: 24.h),
 
               // OR divider
@@ -196,7 +200,7 @@ class LoginView extends StatelessWidget {
               SocialButton(
                 icon: AppImages.googleIcon,
                 label: AppStrings.continueWithGoogle,
-                onTap: () {},
+                onTap: () => controller.signInWithGoogle(),
               ),
 
               SizedBox(height: 12.h),

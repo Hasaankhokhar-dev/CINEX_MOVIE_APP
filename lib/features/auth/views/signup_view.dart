@@ -46,15 +46,19 @@ class SignupView extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 16.h),
-              const AppTextField(
+              AppTextField(
                 hint: AppStrings.fullNameHint,
                 prefixIcon: AppImages.personIcon,
+                textController: controller.nameController,
+                errorText: controller.nameError.value,
               ),
               SizedBox(height: 16.h),
-              const AppTextField(
+              AppTextField(
                 hint: AppStrings.emailHint,
                 prefixIcon: AppImages.mailIcon,
                 keyboardType: TextInputType.emailAddress,
+                textController: controller.emailController,
+                errorText: controller.emailError.value,
               ),
               SizedBox(height: 16.h),
               Obx(
@@ -64,6 +68,8 @@ class SignupView extends StatelessWidget {
                   isPassword: true,
                   isPasswordVisible: controller.isPasswordVisible.value,
                   onTogglePassword: controller.togglePasswordVisibility,
+                  textController: controller.passwordController,
+                  errorText: controller.passwordError.value,
                 ),
               ),
               SizedBox(height: 32.h),
@@ -71,14 +77,18 @@ class SignupView extends StatelessWidget {
                 width: double.infinity,
                 height: 52.h,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: controller.isLoading.value
+                  ? null
+                  : controller.signUp,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                   ),
-                  child: Text(
+                  child:controller.isLoading.value
+                  ? const CircularProgressIndicator(color: AppColors.white)
+                  : Text(
                     AppStrings.signup,
                     style: TextStyle(
                       fontSize: 16.sp,
@@ -114,7 +124,7 @@ class SignupView extends StatelessWidget {
               SocialButton(
                 icon: AppImages.googleIcon,
                 label: AppStrings.continueWithGoogle,
-                onTap: () {},
+                onTap: () => controller.signInWithGoogle(),
               ),
               SizedBox(height: 12.h),
               SocialButton(
