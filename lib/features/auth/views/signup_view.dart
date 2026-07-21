@@ -46,20 +46,22 @@ class SignupView extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 16.h),
-              AppTextField(
+             Obx(() => AppTextField(
                 hint: AppStrings.fullNameHint,
                 prefixIcon: AppImages.personIcon,
                 textController: controller.nameController,
                 errorText: controller.nameError.value,
               ),
+             ),
               SizedBox(height: 16.h),
-              AppTextField(
+             Obx(() => AppTextField(
                 hint: AppStrings.emailHint,
                 prefixIcon: AppImages.mailIcon,
                 keyboardType: TextInputType.emailAddress,
                 textController: controller.emailController,
                 errorText: controller.emailError.value,
               ),
+             ),
               SizedBox(height: 16.h),
               Obx(
                 () => AppTextField(

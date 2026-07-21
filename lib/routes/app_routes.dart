@@ -8,4 +8,8 @@ class AppRoutes {
   static const otpVerification = '/otpVerification';
   static const createNewPassword = '/createNewPassword';
   static const passwordChanged = '/passwordChanged';
+  static const favorites = '/favorites';
+  static const genres = '/genres';
+  static const search = '/search';
+  static const detail = '/detail';
 }

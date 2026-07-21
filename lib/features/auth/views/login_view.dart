@@ -58,13 +58,14 @@ class LoginView extends StatelessWidget {
               SizedBox(height: 24.h),
 
               // Email field
-              AppTextField(
+             Obx(() =>  AppTextField(
                 hint: AppStrings.emailHint,
                 prefixIcon: AppImages.mailIcon,
                 keyboardType: TextInputType.emailAddress,
                 textController: controller.emailController,
+                errorText: controller.emailError.value,
               ),
-
+             ),
               SizedBox(height: 16.h),
 
               // Password field
@@ -75,6 +76,7 @@ class LoginView extends StatelessWidget {
                 isPasswordVisible: controller.isPasswordVisible.value,
                 onTogglePassword: controller.togglePasswordVisibility,
                 textController: controller.passwordController,
+                errorText: controller.passwordError.value,
               )),
 
               SizedBox(height: 12.h),

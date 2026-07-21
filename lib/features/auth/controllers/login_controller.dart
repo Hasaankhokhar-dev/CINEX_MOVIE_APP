@@ -37,6 +37,14 @@ class LoginController extends GetxController {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
 
+    if (email.isEmpty) {
+      emailError.value = 'Enter Email';
+      return;
+    }
+    if (password.isEmpty) {
+      passwordError.value = 'Enter Password';
+      return;
+    }
 
     try {
       isLoading.value = true;
@@ -51,7 +59,7 @@ class LoginController extends GetxController {
       Get.snackbar(
         'Error',
         e.toString(),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
       );
     } finally {
       isLoading.value = false;
@@ -72,7 +80,7 @@ class LoginController extends GetxController {
       Get.snackbar(
         'Error',
         e.toString(),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
       );
     } finally {
       isLoading.value = false;

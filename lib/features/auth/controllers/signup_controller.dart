@@ -78,12 +78,12 @@ class SignupController extends GetxController {
         Get.snackbar(
           'Success',
           'Account created successfully!',
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
         );
         Get.offAllNamed(AppRoutes.home);
       }
     } catch (e) {
-      Get.snackbar('Error', e.toString(), snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Error', e.toString(), snackPosition: SnackPosition.TOP);
     } finally {
       isLoading.value = false;
     }
@@ -103,7 +103,7 @@ class SignupController extends GetxController {
       Get.snackbar(
         'Error',
         e.toString(),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
       );
     } finally {
       isLoading.value = false;

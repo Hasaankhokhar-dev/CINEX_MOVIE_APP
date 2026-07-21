@@ -38,7 +38,7 @@ class ForgotPasswordController extends GetxController {
       Get.snackbar(
         'Success',
         'Password reset email sent successfully!',
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
       );
 
       Get.toNamed(AppRoutes.login);
@@ -47,7 +47,7 @@ class ForgotPasswordController extends GetxController {
       Get.snackbar(
         'Error',
         e.toString(),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
       );
     } finally {
       isLoading.value = false;
