@@ -3,10 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FeaturedMovieBanner extends StatefulWidget {
   final List<Map<String, String>> movies;
-
+  final Function(int index)? onMovieTap;
   const FeaturedMovieBanner({
     super.key,
     required this.movies,
+    this.onMovieTap,
   });
 
   @override

@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
+import '../controllers/movie_detail_controller.dart';
 import '../widgets/cast_avatar.dart';
-import '../widgets/movie_card.dart';
+
 
 class MovieDetailView extends StatefulWidget {
-  const MovieDetailView({super.key});
+  final int movieId;
+
+  const MovieDetailView({super.key, required this.movieId});
 
   @override
   State<MovieDetailView> createState() => _MovieDetailViewState();
@@ -17,122 +19,99 @@ class _MovieDetailViewState extends State<MovieDetailView> {
   bool _isWishlisted = false;
   bool _isSynopsisExpanded = false;
 
-  final String _posterUrl =
-      'https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg';
+  late final MovieDetailController controller;
 
-  final List<Map<String, String>> _cast = [
-    {
-      'image': 'https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg',
-      'name': 'Tom Holland',
-      'role': 'Hero',
-    },{
-      'image': 'https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg',
-      'name': 'Tom Holland',
-      'role': 'Hero',
-    },{
-      'image': 'https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg',
-      'name': 'Tom Holland',
-      'role': 'Hero',
-    },{
-      'image': 'https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg',
-      'name': 'Tom Holland',
-      'role': 'Hero',
-    },
-    {
-      'image': 'https://image.tmdb.org/t/p/w500/AkJQpZp9WoNdj7pLYSj1L0RcMMN.jpg',
-      'name': 'Zendaya',
-      'role': 'Heroine',
-    },
-    {
-      'image': 'https://image.tmdb.org/t/p/w500/fiVW06jE7z9YnO4trhaMEdYTdeq.jpg',
-      'name': 'Tom Hardy',
-      'role': 'Actor',
-    },
-    {
-      'image': 'https://image.tmdb.org/t/p/w500/AkJQpZp9WoNdj7pLYSj1L0RcMMN.jpg',
-      'name': 'Mark Charles',
-      'role': 'Actor',
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    controller = Get.put(
+      MovieDetailController(movieId: widget.movieId),
+      tag: widget.movieId.toString(),
+    );
+  }
 
-  final List<Map<String, String>> _relatedMovies = [
-    {
-      'image': 'https://image.tmdb.org/t/p/w500/fiVW06jE7z9YnO4trhaMEdYTdeq.jpg',
-      'title': 'Fast X',
-      'year': '2024',
-    },
-    {
-      'image': 'https://image.tmdb.org/t/p/w500/AkJQpZp9WoNdj7pLYSj1L0RcMMN.jpg',
-      'title': 'The Nun',
-      'year': '2018',
-    },
-    {
-      'image': 'https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg',
-      'title': 'Justice League',
-      'year': '2017',
-    },
-    {
-      'image': 'https://image.tmdb.org/t/p/w500/fiVW06jE7z9YnO4trhaMEdYTdeq.jpg',
-      'title': 'Avengers',
-      'year': '2019',
-    },
-    {
-      'image': 'https://image.tmdb.org/t/p/w500/AkJQpZp9WoNdj7pLYSj1L0RcMMN.jpg',
-      'title': 'The Batman',
-      'year': '2022',
-    },
-    {
-      'image': 'https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg',
-      'title': 'Dune',
-      'year': '2024',
-    },
-  ];
-
-  final String _synopsis =
-      'Spider-Man: No Way Home (2020) follows Peter Parker as he grapples with the consequences of his secret identity being exposed to the world. In an effort to erase everyone\'s memory and restore his normal life, Peter seeks the help of Doctor Strange.';
+  @override
+  void dispose() {
+    Get.delete<MovieDetailController>(tag: widget.movieId.toString());
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(
+            child: CircularProgressIndicator(color: Color(0xFFFF6565)),
+          );
+        }
 
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildPosterHeader(),
-
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 16.h),
-                      _buildTitleAndMeta(),
-                      SizedBox(height: 20.h),
-                      _buildSynopsis(),
-                      SizedBox(height: 20.h),
-                      _buildCastSection(),
-                      SizedBox(height: 20.h),
-                      _buildWatchNowButton(),
-                      SizedBox(height: 24.h),
-                      _buildRelatedMoviesHeader(),
-                    ],
+        if (controller.errorMessage.value != null) {
+          return Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    controller.errorMessage.value!,
+                    style: const TextStyle(color: Colors.white70),
+                    textAlign: TextAlign.center,
                   ),
-                ),
-
-                SizedBox(height: 12.h),
-                _buildRelatedMoviesList(),
-                SizedBox(height: 30.h),
-              ],
+                  SizedBox(height: 12.h),
+                  ElevatedButton(
+                    onPressed: controller.fetchMovieDetail,
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
             ),
-          ),
+          );
+        }
 
-          _buildStickyTopBar(),
-        ],
-      ),
+        final movie = controller.movieDetail.value;
+        if (movie == null) {
+          return const SizedBox.shrink();
+        }
+
+        return Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildPosterHeader(movie),
+
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 16.h),
+                        _buildTitleAndMeta(movie),
+                        SizedBox(height: 20.h),
+                        _buildSynopsis(movie),
+                        SizedBox(height: 20.h),
+                        _buildCastSection(),
+                        SizedBox(height: 20.h),
+                        _buildWatchNowButton(),
+                        SizedBox(height: 24.h),
+                        _buildRelatedMoviesHeader(),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(height: 12.h),
+                  SizedBox(height: 30.h),
+                ],
+              ),
+            ),
+
+            _buildStickyTopBar(),
+          ],
+        );
+      }),
     );
   }
 
@@ -148,10 +127,9 @@ class _MovieDetailViewState extends State<MovieDetailView> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Back button
               _circleIconButton(
                 icon: Icons.arrow_back_ios_new,
-                onTap: () => Navigator.pop(context),
+                onTap: () => Get.back(),
               ),
               Row(
                 children: [
@@ -164,7 +142,12 @@ class _MovieDetailViewState extends State<MovieDetailView> {
                       });
                     },
                   ),
-
+                  SizedBox(width: 10.w),
+                  CircleAvatar(
+                    radius: 16.r,
+                    backgroundColor: const Color(0xFFFF6565),
+                    child: Icon(Icons.person, size: 18.sp, color: Colors.white),
+                  ),
                 ],
               ),
             ],
@@ -174,7 +157,7 @@ class _MovieDetailViewState extends State<MovieDetailView> {
     );
   }
 
-  Widget _buildPosterHeader() {
+  Widget _buildPosterHeader(movie) {
     return SizedBox(
       width: double.infinity,
       height: 320.h,
@@ -182,14 +165,13 @@ class _MovieDetailViewState extends State<MovieDetailView> {
         fit: StackFit.expand,
         children: [
           Image.network(
-            _posterUrl,
+            movie.backdropUrl, // ── NEW ── real data
             fit: BoxFit.cover,
             alignment: Alignment.topCenter,
             errorBuilder: (context, error, stackTrace) {
               return Container(color: Colors.grey[900]);
             },
           ),
-
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -205,11 +187,11 @@ class _MovieDetailViewState extends State<MovieDetailView> {
               ),
             ),
           ),
-
-          // Center — Play trailer button
           Center(
             child: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                // Trailer logic baad mein
+              },
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -217,24 +199,15 @@ class _MovieDetailViewState extends State<MovieDetailView> {
                     width: 56.w,
                     height: 56.w,
                     decoration: BoxDecoration(
-
                       shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 4.w),
+                      border: Border.all(color: Colors.white, width: 1.5),
                     ),
-                    child: Icon(
-                      Icons.play_arrow_rounded,
-                      color: Colors.white,
-                      size: 30.sp,
-                    ),
+                    child: Icon(Icons.play_arrow_rounded, color: Colors.white, size: 30.sp),
                   ),
                   SizedBox(height: 8.h),
                   Text(
                     'Play Trailer',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(color: Colors.white, fontSize: 12.sp, fontWeight: FontWeight.w500),
                   ),
                 ],
               ),
@@ -255,39 +228,39 @@ class _MovieDetailViewState extends State<MovieDetailView> {
       child: Container(
         width: 34.w,
         height: 34.w,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.black.withOpacity(0.4),
-        ),
+        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.black.withOpacity(0.4)),
         child: Icon(icon, color: iconColor, size: 16.sp),
       ),
     );
   }
 
-  Widget _buildTitleAndMeta() {
+  Widget _buildTitleAndMeta(movie) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Spider-Man: No Way Home',
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
+          movie.title,
+          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         SizedBox(height: 6.h),
+
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              '2021 · Action/Sci-Fi · 3hr 28min',
-              style: TextStyle(fontSize: 12.sp, color: Colors.white54),
+            Expanded(
+              child: Text(
+                '${movie.year} · ${movie.genresText} · ${movie.runtimeFormatted}',
+                style: TextStyle(fontSize: 12.sp, color: Colors.white54),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
             ),
+            SizedBox(width: 8.w),
             Row(
+              mainAxisSize: MainAxisSize.min,
               children: List.generate(5, (index) {
+                final starValue = (movie.voteAverage / 2).round();
                 return Icon(
-                  index < 4 ? Icons.star : Icons.star_border,
+                  index < starValue ? Icons.star : Icons.star_border,
                   color: const Color(0xFFFFC107),
                   size: 14.sp,
                 );
@@ -298,18 +271,13 @@ class _MovieDetailViewState extends State<MovieDetailView> {
       ],
     );
   }
-
-  Widget _buildSynopsis() {
+  Widget _buildSynopsis(movie) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Synopsis',
-          style: TextStyle(
-            fontSize: 15.sp,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
+          style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600, color: Colors.white),
         ),
         SizedBox(height: 8.h),
         RichText(
@@ -318,13 +286,10 @@ class _MovieDetailViewState extends State<MovieDetailView> {
           text: TextSpan(
             style: TextStyle(fontSize: 12.sp, color: Colors.white70, height: 1.5),
             children: [
-              TextSpan(text: _synopsis),
+              TextSpan(text: movie.overview), // ── NEW ──
               TextSpan(
                 text: _isSynopsisExpanded ? '' : '  Read More...',
-                style: const TextStyle(
-                  color: Color(0xFFFF6565),
-                  fontWeight: FontWeight.w600,
-                ),
+                style: const TextStyle(color: Color(0xFFFF6565), fontWeight: FontWeight.w600),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
                     setState(() {
@@ -349,19 +314,21 @@ class _MovieDetailViewState extends State<MovieDetailView> {
         ),
         SizedBox(height: 12.h),
         SizedBox(
-          height: 120.h,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: _cast.length,
-            itemBuilder: (context, index) {
-              final member = _cast[index];
-              return CastAvatar(
-                imageUrl: member['image'] ?? '',
-                name: member['name'] ?? '',
-                role: member['role'] ?? '',
-              );
-            },
-          ),
+          height: 130.h,
+          child: Obx(() {
+            return ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: controller.cast.length,
+              itemBuilder: (context, index) {
+                final member = controller.cast[index];
+                return CastAvatar(
+                  imageUrl: member.profileUrl,
+                  name: member.name,
+                  role: member.character,
+                );
+              },
+            );
+          }),
         ),
       ],
     );
@@ -397,59 +364,6 @@ class _MovieDetailViewState extends State<MovieDetailView> {
     return Text(
       'Related Movies',
       style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600, color: Colors.white),
-    );
-  }
-
-  Widget _buildRelatedMoviesList() {
-    return SizedBox(
-      height: 280.h,
-      child: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.only(left: 16.w, right: 4.w),
-              itemCount: (_relatedMovies.length / 2).ceil(),
-              itemBuilder: (context, index) {
-                final movie = _relatedMovies[index * 2];
-                return MovieCard(
-                  imageUrl: movie['image'] ?? '',
-                  title: movie['title'] ?? '',
-                  width: 100,
-                  height: 100,
-                  onTap: () {
-                    Get.to(() => const MovieDetailView(),
-                      preventDuplicates: false,
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-          SizedBox(height: 12.h),
-          Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.only(left: 16.w, right: 4.w),
-              itemCount: _relatedMovies.length ~/ 2,
-              itemBuilder: (context, index) {
-                final movie = _relatedMovies[index * 2 + 1];
-                return MovieCard(
-                  imageUrl: movie['image'] ?? '',
-                  title: movie['title'] ?? '',
-                  width: 100,
-                  height: 100,
-                  onTap: () {
-                    Get.to(() => const MovieDetailView(),
-                      preventDuplicates: false,
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

@@ -117,28 +117,28 @@ class _SearchViewState extends State<SearchView> {
                 ),
                 itemBuilder: (context, index) {
                   final movie = _topSearches[index];
-                  return MovieListTile(
-                    imageUrl: movie['image'] ?? '',
-                    title: movie['title'] ?? '',
-                    year: movie['year'] ?? '',
-                    showPlayOverlay: false,
-                    onTap: () {
-                      Get.to(() => const MovieDetailView(), preventDuplicates: false);
-                    },
-                    trailing: Container(
-                      width: 34.w,
-                      height: 34.w,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: const Color(0xFFFF6565), width: 1.5),
-                      ),
-                      child: Icon(
-                        Icons.play_arrow_rounded,
-                        color: const Color(0xFFFF6565),
-                        size: 18.sp,
-                      ),
-                    ),
-                  );
+                  // return MovieListTile(
+                  //   imageUrl: movie['image'] ?? '',
+                  //   title: movie['title'] ?? '',
+                  //   year: movie['year'] ?? '',
+                  //   showPlayOverlay: false,
+                  //   onTap: () {
+                  //     Get.to(() => const MovieDetailView(), preventDuplicates: false);
+                  //   },
+                  //   trailing: Container(
+                  //     width: 34.w,
+                  //     height: 34.w,
+                  //     decoration: BoxDecoration(
+                  //       shape: BoxShape.circle,
+                  //       border: Border.all(color: const Color(0xFFFF6565), width: 1.5),
+                  //     ),
+                  //     child: Icon(
+                  //       Icons.play_arrow_rounded,
+                  //       color: const Color(0xFFFF6565),
+                  //       size: 18.sp,
+                  //     ),
+                  //   ),
+                  // );
                 },
               ),
             ),

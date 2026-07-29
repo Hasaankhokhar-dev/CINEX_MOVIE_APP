@@ -5,6 +5,7 @@ import '../controllers/home_controller.dart';
 import '../widgets/section_header.dart';
 import '../widgets/featured_movie_banner.dart';
 import '../widgets/movie_card.dart';
+import 'detail_view.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -67,6 +68,12 @@ class HomeView extends StatelessWidget {
                       'description': movie.overview,
                     };
                   }).toList(),
+                  onMovieTap: (index) {
+                    Get.to(
+                          () => MovieDetailView(movieId: controller.popularMovies[index].id),
+                      preventDuplicates: false,
+                    );
+                  },
                 ),
 
                 SizedBox(height: 24.h),
@@ -87,6 +94,12 @@ class HomeView extends StatelessWidget {
                         title: movie.title,
                         width: 130,
                         height: 130,
+                        onTap: () {
+                          Get.to(
+                                () => MovieDetailView(movieId: movie.id),
+                            preventDuplicates: false,
+                          );
+                        },
                       );
                     },
                   ),
@@ -111,6 +124,12 @@ class HomeView extends StatelessWidget {
                         title: movie.title,
                         width: 130,
                         height: 130,
+                        onTap: () {
+                          Get.to(
+                                () => MovieDetailView(movieId: movie.id),
+                            preventDuplicates: false,
+                          );
+                        },
                       );
                     },
                   ),
@@ -137,6 +156,12 @@ class HomeView extends StatelessWidget {
                               title: movie.title,
                               width: 100,
                               height: 100,
+                              onTap: () {
+                                Get.to(
+                                      () => MovieDetailView(movieId: movie.id),
+                                       preventDuplicates: false,
+                                );
+                              },
                             );
                           },
                         ),

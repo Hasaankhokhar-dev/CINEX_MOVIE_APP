@@ -29,6 +29,5 @@ class AppPages {
     GetPage(name: AppRoutes.favorites, page: () => const FavoritesView()),
     GetPage(name: AppRoutes.search, page: () => const SearchView()),
     GetPage(name: AppRoutes.genres, page: () => const GenresView()),
-    GetPage(name: AppRoutes.detail, page: () => const MovieDetailView())
   ];
 }

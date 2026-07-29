@@ -20,19 +20,15 @@ class CastAvatar extends StatelessWidget {
       margin: EdgeInsets.only(right: 12.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min, // ── NEW ── Column apni zaroorat ki height le, extra na le
         children: [
-          Center(
-            child: Text(
-              role,
-              style: TextStyle(
-                fontSize: 10.sp,
-                color: Colors.white54,
-              ),
-            ),
+          Text(
+            role,
+            style: TextStyle(fontSize: 10.sp, color: Colors.white54),
+            maxLines: 1, // ── NEW ──
+            overflow: TextOverflow.ellipsis, // ── NEW ── role lamba ho to bhi crop ho jaye
           ),
-
           SizedBox(height: 6.h),
-
           ClipRRect(
             borderRadius: BorderRadius.circular(12.r),
             child: Image.network(
@@ -43,11 +39,7 @@ class CastAvatar extends StatelessWidget {
               alignment: Alignment.topCenter,
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) return child;
-                return Container(
-                  width: 70.w,
-                  height: 70.w,
-                  color: Colors.grey[900],
-                );
+                return Container(width: 70.w, height: 70.w, color: Colors.grey[900]);
               },
               errorBuilder: (context, error, stackTrace) {
                 return Container(
@@ -57,26 +49,16 @@ class CastAvatar extends StatelessWidget {
                     color: Colors.grey[900],
                     borderRadius: BorderRadius.circular(12.r),
                   ),
-                  child: Icon(
-                    Icons.person,
-                    color: Colors.white38,
-                    size: 24.sp,
-                  ),
+                  child: Icon(Icons.person, color: Colors.white38, size: 24.sp),
                 );
               },
             ),
           ),
-
           SizedBox(height: 6.h),
-
           Text(
             name,
-            style: TextStyle(
-              fontSize: 11.sp,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-            ),
-            maxLines: 1,
+            style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w600, color: Colors.white),
+            maxLines: 1, // ── already tha, confirm kar raha hoon ye zaroor rahe
             overflow: TextOverflow.ellipsis,
           ),
         ],

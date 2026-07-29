@@ -73,22 +73,22 @@ class _FavoritesViewState extends State<FavoritesView> {
                 ),
                 itemBuilder: (context, index) {
                   final movie = _favorites[index];
-                  return FavoriteMovieItem(
-                    imageUrl: movie['image'] ?? '',
-                    title: movie['title'] ?? '',
-                    year: movie['year'] ?? '',
-                    onTap: () {
-                      Get.to(
-                            () => const MovieDetailView(),
-                        preventDuplicates: false,
-                      );
-                    },
-                    onRemove: () {
-                      setState(() {
-                        _favorites.removeAt(index); // ── NEW ── local remove abhi, API ke baad backend call bhi hoga
-                      });
-                    },
-                  );
+                  // return FavoriteMovieItem(
+                  //   imageUrl: movie['image'] ?? '',
+                  //   title: movie['title'] ?? '',
+                  //   year: movie['year'] ?? '',
+                  //   onTap: () {
+                  //     Get.to(
+                  //           () => const MovieDetailView(),
+                  //       preventDuplicates: false,
+                  //     );
+                  //   },
+                  //   onRemove: () {
+                  //     setState(() {
+                  //       _favorites.removeAt(index); // ── NEW ── local remove abhi, API ke baad backend call bhi hoga
+                  //     });
+                  //   },
+                  // );
                 },
               ),
             ),

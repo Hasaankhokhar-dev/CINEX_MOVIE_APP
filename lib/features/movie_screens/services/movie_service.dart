@@ -3,6 +3,9 @@ import 'package:cinex_movie_app/features/movie_screens/models/movie_model.dart';
 import 'package:cinex_movie_app/features/movie_screens/tmdb_constants/tmdb_constants.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/cast_model.dart';
+import '../models/movie_detail_model.dart';
+
 class MovieService {
   static Future<List<MovieModel>> getPopularMovies() async {
     try {
@@ -49,7 +52,7 @@ class MovieService {
             '&primary_release_date.gte=$dateFrom'   // gte = greater than or equal
             '&primary_release_date.lte=$dateTo'     // lte = less than or equal
             '&sort_by=popularity.desc'              // popular pehle aaye
-            '&vote_count.gte=50',                   // kam se kam 50 votes ho (garbage filter)
+            '&vote_count.gte=50',                   // kam se kam 50 votes ho
       );
 
       final response = await http.get(uri);
@@ -71,6 +74,50 @@ class MovieService {
     final month = date.month.toString().padLeft(2, '0'); // 7 → "07"
     final day = date.day.toString().padLeft(2, '0');     // 5 → "05"
     return '${date.year}-$month-$day';
+  }
+
+  static Future<MovieDetailModel> getMovieDetail(int movieId) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+          '${TmdbConstants.movieDetail(movieId)}?api_key=${TmdbConstants.apiKey}',
+        ),
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode != 200) {
+        final error = data['status_message'] ?? 'Something went wrong';
+        throw _handleError(error);
+      }
+
+      return MovieDetailModel.fromJson(data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+// ===== MOVIE CAST (Credits) =====
+  static Future<List<CastModel>> getMovieCast(int movieId) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+          '${TmdbConstants.movieCredits(movieId)}?api_key=${TmdbConstants.apiKey}',
+        ),
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode != 200) {
+        final error = data['status_message'] ?? 'Something went wrong';
+        throw _handleError(error);
+      }
+
+      final List castList = data['cast'];
+      return castList.map((json) => CastModel.fromJson(json)).toList();
+    } catch (e) {
+      rethrow;
+    }
   }
 
   static String _handleError(String errorCode) {
