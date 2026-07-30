@@ -1,3 +1,4 @@
+import 'package:cinex_movie_app/features/movie_screens/views/trailer_player_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -190,8 +191,19 @@ class _MovieDetailViewState extends State<MovieDetailView> {
           Center(
             child: GestureDetector(
               onTap: () {
-                // Trailer logic baad mein
-              },
+                final trailerKey = controller.trailerKey.value; // ── NEW ──
+                if (trailerKey != null && trailerKey.isNotEmpty) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TrailerPlayerView(videoKey: trailerKey),
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Trailer not available')),
+                  );
+                }              },
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [

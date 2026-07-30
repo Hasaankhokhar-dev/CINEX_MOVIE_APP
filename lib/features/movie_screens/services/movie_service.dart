@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 
 import '../models/cast_model.dart';
 import '../models/movie_detail_model.dart';
+import '../models/video_model.dart';
 
 class MovieService {
   static Future<List<MovieModel>> getPopularMovies() async {
@@ -97,7 +98,7 @@ class MovieService {
     }
   }
 
-// ===== MOVIE CAST (Credits) =====
+
   static Future<List<CastModel>> getMovieCast(int movieId) async {
     try {
       final response = await http.get(
@@ -115,6 +116,29 @@ class MovieService {
 
       final List castList = data['cast'];
       return castList.map((json) => CastModel.fromJson(json)).toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // ===== MOVIE VIDEOS (Trailers/Teasers) =====
+  static Future<List<VideoModel>> getMovieVideos(int movieId) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+          '${TmdbConstants.movieVideos(movieId)}?api_key=${TmdbConstants.apiKey}',
+        ),
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode != 200) {
+        final error = data['status_message'] ?? 'Something went wrong';
+        throw _handleError(error);
+      }
+
+      final List results = data['results'];
+      return results.map((json) => VideoModel.fromJson(json)).toList();
     } catch (e) {
       rethrow;
     }

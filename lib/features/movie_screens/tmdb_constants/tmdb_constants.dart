@@ -13,5 +13,5 @@ class TmdbConstants {
 
   static String movieCredits(int id) => '$baseUrl/movie/$id/credits';
 
-
+  static String movieVideos(int id) => '$baseUrl/movie/$id/videos';
 }
