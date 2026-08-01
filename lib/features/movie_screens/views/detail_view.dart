@@ -98,7 +98,6 @@ class _MovieDetailViewState extends State<MovieDetailView> {
                         SizedBox(height: 20.h),
                         _buildWatchNowButton(),
                         SizedBox(height: 24.h),
-                        _buildRelatedMoviesHeader(),
                       ],
                     ),
                   ),
@@ -144,11 +143,7 @@ class _MovieDetailViewState extends State<MovieDetailView> {
                     },
                   ),
                   SizedBox(width: 10.w),
-                  CircleAvatar(
-                    radius: 16.r,
-                    backgroundColor: const Color(0xFFFF6565),
-                    child: Icon(Icons.person, size: 18.sp, color: Colors.white),
-                  ),
+
                 ],
               ),
             ],
@@ -212,7 +207,7 @@ class _MovieDetailViewState extends State<MovieDetailView> {
                     height: 56.w,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 1.5),
+                      border: Border.all(color: Colors.white, width: 2.5),
                     ),
                     child: Icon(Icons.play_arrow_rounded, color: Colors.white, size: 30.sp),
                   ),
@@ -372,10 +367,4 @@ class _MovieDetailViewState extends State<MovieDetailView> {
     );
   }
 
-  Widget _buildRelatedMoviesHeader() {
-    return Text(
-      'Related Movies',
-      style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600, color: Colors.white),
-    );
-  }
 }

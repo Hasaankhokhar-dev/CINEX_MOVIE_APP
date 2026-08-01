@@ -121,7 +121,6 @@ class MovieService {
     }
   }
 
-  // ===== MOVIE VIDEOS (Trailers/Teasers) =====
   static Future<List<VideoModel>> getMovieVideos(int movieId) async {
     try {
       final response = await http.get(
@@ -139,6 +138,28 @@ class MovieService {
 
       final List results = data['results'];
       return results.map((json) => VideoModel.fromJson(json)).toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<List<MovieModel>> searchMovies(String query) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+          '${TmdbConstants.searchMovie}?api_key=${TmdbConstants.apiKey}&query=$query',
+        ),
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode != 200) {
+        final error = data['status_message'] ?? 'Something went wrong';
+        throw _handleError(error);
+      }
+
+      final List results = data['results'];
+      return results.map((json) => MovieModel.fromJson(json)).toList();
     } catch (e) {
       rethrow;
     }

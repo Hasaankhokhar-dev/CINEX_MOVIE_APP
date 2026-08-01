@@ -7,7 +7,7 @@ class MovieListTile extends StatelessWidget {
   final String year;
   final VoidCallback onTap;
   final Widget trailing;
-  final bool showPlayOverlay; // ── NEW ── poster ke upar play icon chahiye ya nahi
+  final bool showPlayOverlay;
 
   const MovieListTile({
     super.key,
@@ -16,7 +16,7 @@ class MovieListTile extends StatelessWidget {
     required this.year,
     required this.onTap,
     required this.trailing,
-    this.showPlayOverlay = false, // ── NEW ── default false
+    this.showPlayOverlay = false,
   });
 
   @override
