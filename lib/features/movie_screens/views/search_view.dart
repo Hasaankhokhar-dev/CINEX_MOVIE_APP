@@ -66,7 +66,7 @@ class SearchView extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Obx(() => Text(
-                controller.hasSearched.value ? 'Results' : 'Top Searches', // ── NEW ── heading dynamic
+                controller.hasSearched.value ? 'Results' : 'Top Searches',
                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600, color: Colors.white),
               )),
             ),
@@ -110,7 +110,6 @@ class SearchView extends StatelessWidget {
                   );
                 }
 
-                // ===== RESULTS LIST =====
                 return ListView.builder(
                   padding: EdgeInsets.only(bottom: 90.h),
                   itemCount: controller.searchResults.length,

@@ -133,17 +133,12 @@ class _MovieDetailViewState extends State<MovieDetailView> {
               ),
               Row(
                 children: [
-                  _circleIconButton(
-                    icon: _isWishlisted ? Icons.favorite : Icons.favorite_border,
-                    iconColor: _isWishlisted ? Colors.red : Colors.white,
-                    onTap: () {
-                      setState(() {
-                        _isWishlisted = !_isWishlisted;
-                      });
-                    },
-                  ),
+                 Obx(() => _circleIconButton(
+                   icon: controller.isFavorite.value ? Icons.favorite : Icons.favorite_border,
+                   iconColor: controller.isFavorite.value ? Colors.red : Colors.white,
+                    onTap: controller.toggleFavorite,
+                  )),
                   SizedBox(width: 10.w),
-
                 ],
               ),
             ],

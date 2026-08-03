@@ -7,6 +7,9 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+
+import '../controllers/favorites_controller.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -62,6 +65,9 @@ class _MainViewState extends State<MainView> {
                 setState(() {
                   _currentIndex = index;
                 });
+                if (index == 1) {
+                  Get.find<FavoritesController>().loadFavorites();
+                }
               },
               items: List.generate(4, (index) {
                 final isActive = _currentIndex == index;
